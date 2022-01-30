@@ -1,0 +1,121 @@
+/* @font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/sourcesanspro/v14/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/sourcesanspro/v14/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdr.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/sourcecodepro/v14/HI_SiYsKILxRpg3hIP6sJ7fM7PqlPevT.ttf) format('truetype');
+} */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 580px;
+    margin: auto;
+    padding: 10px;
+    position: relative;
+    background: #fdfdfd;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+div[contenteditable] {
+    font-size: 1.2em;
+    font-family: 'Source Sans Pro', sans-serif;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    padding: 10px 20px 10px;
+    min-height: 300px;
+    background: #f9f9f9;
+}
+
+div[contenteditable] pre,
+div[contenteditable] code {
+    background: #ededed;
+}
+
+div[contenteditable]:focus {
+    font-family: 'Source Code Pro', courier, monospace;
+    font-size: 1em;
+}
+
+.header {
+    margin: 5px 10px 0;
+    color: #d46e58;
+    display: inline-block;
+}
+
+.note {
+    background: #eee;
+    box-shadow: #999 1px 1px 3px;
+    margin: 30px 0;
+    padding-top: 40px;
+    min-height: 200px;
+    width: 100%;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 15px;
+    font-size: 0.7em;
+    font-style: italic;
+    color: #71CBD0;
+}
+
+.icons {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+}
+
+.fa-trash-o,
+.fa-plus-circle {
+    cursor: pointer;
+}
+
+.fa-check {
+    color: #92D788;
+}
+
+.fa-trash-o {
+    color: #C2474B;
+}
+
+.fa-trash-o:hover {
+    color: #7a292b;
+}
+
+.fa-pencil {
+    color: #DBC394;
+}
+
+.fa-plus-circle {
+    color: #71CBD0;
+}
+
+.fa-plus-circle:hover {
+    color: #369fa5;
+}

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="cn" >
+<head>
+<meta charset="UTF-8">
+<title>上传图像素描画处理工具</title>
+
+<link
+  rel="icon"
+  href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+  type="image/x-icon"
+/>
+<link
+  rel="shortcut icon"
+  href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+  type="image/x-icon"
+/>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<aside>
+	<form action="">
+		<label for="img_upload">图片</label>
+		<div class="upload-btn">
+			<input id="img_upload" name="img_upload" type="file" accept="image/*">
+			<button type="button" for="img_upload" tabindex="-1">上传</button>
+			<input id="img_name" name="img_name" type="text" placeholder="未选择文件" disabled>
+		</div>
+		<div class="colors">
+			<div class="color">
+				<label for="color1">颜色 1</label>
+				<input id="color1" type="color" name="color1" value="#ffffff">
+			</div>
+			<div class="color">
+				<label for="color2">颜色 2</label>
+				<input id="color2" type="color" name="color2" value="#000000">
+			</div>
+		</div>
+		<div class="btn-group">
+			<button class="btn-half" id="swap-colors" type="button">填充色对换</button>
+			<a href="#" class="btn-link btn-half dl-btn" id="download" download="result.png">下载图片</a>
+		</div>
+	</form>
+</aside>
+<main>
+	<canvas></canvas>
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

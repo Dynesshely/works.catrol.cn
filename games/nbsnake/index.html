@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>疯狂贪吃蛇</title>
+
+<link
+  rel="icon"
+  href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+  type="image/x-icon"
+/>
+<link
+  rel="shortcut icon"
+  href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+  type="image/x-icon"
+/>
+<style>
+	canvas{ border: 1px solid #000000;}
+</style>
+
+</head>
+<body>
+
+<canvas width="980" height="600" id="canvas"></canvas>
+
+<script>
+	//初始化变量
+	var foods = new Array();    //存放食物坐标
+	var gameover = false; //游戏结束
+	var gridWidth = 10;  //正方形长度
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");  //构建画布
+	//食物定时器、蛇定时器、场景、蛇对象
+	var food_interval,snake_interval,Farm,Snake;
+
+
+	//方格对象
+	function node(x,y,w)
+	{
+		var self = this;
+		self.x = x;
+		self.y = y;
+		self.w = w;
+
+		//食物初始化
+		self.foodInit = function()
+		{
+			ctx.fillStyle = "#FF0000";
+			ctx.fillRect(self.x,self.y,self.w,self.w);
+		}
+
+		//蛇的初始化
+		self.snakeInit = function()
+		{
+			ctx.fillStyle = "#000000";
+			ctx.strokeStyle = "#FFFFFF";
+			ctx.fillRect(x,y,w,w);
+			ctx.strokeRect(x,y,w,w);
+		}
+
+		//判断两个方块是否重合
+		self.equals = function(node)
+		{
+			if(self.x == node.x && self.y == node.y)
+			{
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		//清除格子  让格子跟背景颜色一样
+		self.clear = function()
+		{
+			ctx.fillStyle = "#E8FFFF";
+			ctx.strokeStyle = "#E8FFFF";
+			ctx.fillRect(x,y,w,w);
+            ctx.strokeRect(x,y,w,w);
+		}
+	}	
+
+
+	//创建场景对象
+	function farm()
+	{
+		//保存作用域
+		var self = this;
+		ctx.fillStyle = "#E8FFFF"; //填充的场景颜色
+		ctx.fillRect(0,0,canvas.width,canvas.height);
+
+		//增加食物的方法
+		self.addFood = function()
+		{
+			if(gameover)
+			{
+				return gameOver(); //游戏结束方法
+			}else{
+				//计算随机位置
+				var x = parseInt(canvas.width/gridWidth*Math.random())*gridWidth;
+				var y = parseInt(canvas.height/gridWidth*Math.random())*gridWidth;
+				//实例化一个方格对象
+				var food = new node(x,y,gridWidth);
+				//得到对象之后，要把食物画到界面上面
+				food.foodInit();
+
+				//追加到数组里面
+				foods.push(food);
+			}
+		}
+	}
+
+	//蛇对象
+	function snake(x,y,len,speed)
+	{
+		var self = this;
+
+		self.init = function()
+		{
+			self.len = len; //身体长度
+			self.nodes = new Array(); //蛇的身体数组
+			self.dir = "R"; //方向
+			self.speed = speed; //速度
+			//从右往左，逐格把蛇画出来
+			var nx =x ,ny=y; //蛇的坐标点
+			for(var i=0;i<len;i++)
+			{
+				//创建一个方格对象
+				var tmpNode = new node(nx,ny,gridWidth);
+				//把蛇的身体存放起来
+				self.nodes[i] = tmpNode;
+				//存放完了之后，把蛇画出来
+				tmpNode.snakeInit();
+				nx -= gridWidth; //往左边画 
+			}
+
+
+			//让蛇动起来定时器
+			snake_interval = setInterval(self.move,self.speed);
+
+			//给蛇绑定方向按键
+			document.onkeydown = function(e)
+			{
+				//按键的值
+				var code = e.keyCode;
+				//记录一下旧的方向
+				self.odir = self.dir;
+				switch(code)
+				{
+					//一组方向键 一组字母 WASD
+					case 65:self.dir = "L";break;
+					case 87:self.dir = "U";break;
+					case 68:self.dir = "R";break;
+					case 83:self.dir = "D";break;
+					case 37:self.dir = "L";break;
+					case 38:self.dir = "U";break;
+					case 39:self.dir = "R";break;
+					case 40:self.dir = "D";break;
+				}
+			}
+		}
+
+		//蛇移动方法
+		self.move = function()
+		{
+			var len = self.len; //获取蛇的身体长度
+			var head = self.nodes[0];//头部
+			switch(self.dir)
+			{
+				//右边
+				case "R":
+					if(head.x + head.w >=canvas.width)
+					{
+						//撞墙
+						return gameOver();
+					}else{
+						//新的头部
+						var newHead = new node(head.x+head.w,head.y,head.w);
+					}
+					break;
+					//左边
+				case "L":
+					if(head.x - head.w < 0)
+					{
+						//撞墙
+						return gameOver();
+					}else{
+						//新的头部
+						var newHead = new node(head.x-head.w,head.y,head.w);
+					}
+					break;
+				case "U":
+					if(head.y -head.w < 0)
+					{
+						//撞墙
+						return gameOver();
+					}else{
+						//新的头部
+						var newHead = new node(head.x,head.y-head.w,head.w);
+					}
+					break;
+				case "D":
+					if(head.y + head.w >= canvas.height)
+					{
+						//撞墙
+						return gameOver();
+					}else{
+						//新的头部
+						var newHead = new node(head.x,head.y+head.w,head.w);
+					}
+			}
+		
+			//禁止运行反方向
+			if(self.nodes[1].equals(newHead))
+			{
+				self.dir = self.odir;
+				return false;
+			}
+
+			///禁止穿过自身，否则gameover
+			for(var i=0;i<self.len;i++)
+			{
+				if(self.nodes[i].equals(newHead))
+				{
+					return gameOver();
+				}
+			}
+
+			//初始化为蛇头
+			newHead.snakeInit();
+
+			//同时把蛇尾去掉
+			self.nodes[self.len-1].clear();
+			//将数组中的最后一个元素删除
+			self.nodes.pop();
+
+			//蛇身向前走
+			for(var i=len-1;i>0;i--)
+			{
+				self.nodes[i] = self.nodes[i-1];
+			}
+
+			//干掉蛇的尾部 其余部分往后篡位 把头部空出来 让newHead塞进去
+			self.nodes[0] = newHead;
+
+			//判断是否吃到食物
+			for(var i=0;i<foods.length;i++)
+			{
+				//让数组中的每个食物跟头部判断是否重合
+				if(foods[i].equals(newHead))
+				{
+					//给蛇增加身体长度
+					self.addNode();
+					foods.pop(newHead); //foods[i]
+
+					//调整速度 越来越快
+					self.speed = self.speed>20?self.speed-10:self.speed;
+					//调完速度要重新设置定时器
+					clearInterval(snake_interval);
+					snake_interval = setInterval(Snake.move,self.speed);
+					break;
+				}
+			}
+
+		
+		}
+
+		//给蛇身体添加长度
+		self.addNode = function()
+		{
+			var tail1 = self.nodes[self.len-1]; //倒数第一个
+            var tail2 = self.nodes[self.len-2]; //倒数第二个
+
+			if(tail1.x == tail2.x)
+			{
+				//上下方向
+				var addNode;
+				if(tail1.y > tail2.y)
+				{
+					//往上
+					addNode = new node(tail1.x,tail1.y+gridWidth,gridWidth);
+				}else{
+					//往下
+					addNode = new node(tail1.x,tail1.y-gridWidth,gridWidth)
+				}
+			}else{
+				//左右方向
+				if(tail1.x > tail2.x)
+				{
+					//往左
+					addNode = new node(tail1.x+gridWidth,tail1.y,gridWidth)
+				}else{
+					//往右
+					addNode = new node(tail1.x-gridWidth,tail1.y,gridWidth)
+				}
+			}
+
+			//新的身体画出来
+			addNode.snakeInit();
+			//将新的身体放到蛇的数组里面
+			self.nodes[self.len] = addNode;
+			self.len +=1; //把身体长度加一
+		}
+
+	}
+
+
+	//游戏结束
+	function gameOver()
+	{
+		gameover = true; 
+		//停止添加食物和蛇的跑动
+		clearInterval(snake_interval);
+		clearInterval(food_interval);
+
+		var res = confirm("游戏结束，是否重新开始");
+
+		if(res)
+		{
+			gameStart();
+		}
+	}
+
+	//游戏开始
+	function gameStart()
+	{
+		foods = new Array();    //清空存放食物坐标
+		gameover = false;
+		//初始化场地
+		Farm = new farm();
+
+		//添加定时器，定时增加食物 每隔3秒钟出一个食物
+		food_interval = setInterval(Farm.addFood,50);
+
+		//初始化一条蛇出来
+		Snake = new snake(200,200,5,150);
+		Snake.init();
+	}
+
+	gameStart();
+</script>
+
+</body>
+</html>

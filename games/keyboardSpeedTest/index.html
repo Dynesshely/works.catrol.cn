@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="UTF-8" />
+    <title>打字速度测试小游戏</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="icon"
+      href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://source.catrol.cn/icons/Catrol-ycjb.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="game-container" data-state="pre-game">
+        <h1 class="title"></h1>
+        <div class="highscore-container"></div>
+        <div class="letter__container">
+          <div class="letter letter--template" data-state="inactive"></div>
+        </div>
+        <div class="restart-button__container">
+          <button class="restart-button" type="button">再玩一次</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

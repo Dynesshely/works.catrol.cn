@@ -1,0 +1,161 @@
+* {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+:root {
+	font-size: calc(16px + (24 - 16) * (100vw - 320px) / (2560 - 320));
+	--bg: #737a8c;
+	--buttonBg: #2762f3;
+	--buttonHoverBg: #0c48db;
+	--formBg: #fff;
+	--inputBorder: #abafba;
+	--inputBg: #fff;
+	--inputDisableBg: #e3e4e8;
+	--pColor: #17181c;
+}
+body, button, input {
+	color: var(--pColor);
+	font: 1em/1.5 "Hind", system-ui, -apple-system, sans-serif;
+}
+body, .upload-btn {
+	overflow: hidden;
+}
+body {
+	background: var(--bg);
+	display: flex;
+	flex-direction: column-reverse;
+	height: 100vh;
+}
+aside, button, canvas, input, main, .upload-btn input[type=file] {
+	width: 100%;
+}
+aside {
+	background: var(--formBg);
+	box-shadow: 0 0 0.25em hsla(223,10%,10%,0.5);
+	overflow: auto;
+}
+button, input {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+button, input[type=color], input[type=file] {
+	cursor: pointer;
+}
+button:hover, button:focus, .btn-link:hover, .btn-link:focus, input[type=file]:hover + button, input[type=file]:focus + button {
+	background: var(--buttonHoverBg);
+}
+button, .btn-link, canvas, input, label {
+	display: block;
+}
+button, .btn-link {
+	background: var(--buttonBg);
+	border-radius: 0.375em;
+	color: #fff;
+	margin-bottom: 1.5em;
+	padding: 0.75em 1em;
+	transition: background 0.1s linear;
+}
+button:focus, .btn-link:focus {
+	outline: 0;
+}
+canvas {
+	image-rendering: pixelated; /* as of Feb 2021, not supported in Firefox */
+	object-fit: contain;
+	max-height: calc(100vh - 20.375em);
+}
+form {
+	padding: 1.5em 1.5em 0 1.5em;
+}
+input[type=text], input[type=file] + button, .upload-btn {
+	margin-bottom: 0.75em;
+}
+input {
+	background: var(--inputBg);
+	border-radius: 0.25em;
+	box-shadow: 0 0 0 1px var(--inputBorder) inset;
+	padding: 0.75em;
+}
+input:disabled {
+	background: var(--inputDisableBg);
+	cursor: not-allowed;
+	text-overflow: ellipsis;
+}
+input[type=color] {
+	height: 3em;
+	padding: 0.375em;
+}
+label {
+	font-weight: bold;
+}
+main {
+	margin: auto;
+}
+.btn-link {
+	text-align: center;
+	text-decoration: none;
+}
+.btn-group, .colors, .color {
+	display: flex;
+	justify-content: space-between;
+}
+.btn-half, .color {
+	width: calc(50% - 0.375em);
+}
+.colors {
+	margin-bottom: 1.5em;
+}
+.color {
+	align-items: center;
+}
+.color label {
+	width: 4em;
+}
+.color input {
+	width: calc(100% - 4em);
+}
+.dl-btn {
+	background: #067a1f;
+}
+.dl-btn:hover, .dl-btn:focus {
+	background: #044913;
+}
+.upload-btn {
+	position: relative;
+}
+.upload-btn input[type=file] {
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	height: 3em;
+}
+/* Tablet, desktop */
+@media screen and (min-width: 768px) {
+	body {
+		flex-direction: row;
+		align-items: center;
+	}
+	aside {
+		width: 20em;
+		height: 100%;
+	}
+	canvas {
+		max-height: 100vh;
+	}
+	main {
+		width: calc(100% - 20em);
+	}
+}
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--formBg: #17181c;
+		--inputBg: #2e3138;
+		--inputDisableBg: #2e3138;
+		--inputBorder: #2e3138;
+		--pColor: #e3e4e8;
+	}
+}

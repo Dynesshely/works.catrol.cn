@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MarkDown 预览器</title>
+    <script src="./modernizr.min.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="./normalize.min.css" />
+    <link rel="stylesheet" href="./githubmd.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script type="text/javascript">
+      function downloadJSAtOnload() {
+        var element = document.createElement("script");
+        element.src = "defer.js";
+        document.body.appendChild(element);
+      }
+      if (window.addEventListener)
+        window.addEventListener("load", downloadJSAtOnload, false);
+      else if (window.attachEvent)
+        window.attachEvent("onload", downloadJSAtOnload);
+      else window.onload = downloadJSAtOnload;
+    </script>
+  </head>
+  <body>
+    <div ng-app="notesApp" class="app">
+      <div ng-controller="notesController">
+        <div
+          class="note"
+          ng-repeat="note in notes | orderBy:'createdOn':true track by $index"
+        >
+          <div
+            class="markdown-body"
+            ng-model="note.text"
+            ng-change="update(notes.length - $index - 1,note.text)"
+            ng-focus="note.edit = true"
+            ng-blur="note.edit = false"
+            markdown-editable
+            contenteditable="true"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <script src="./angular.min.js"></script>
+    <script src="./showdown.min.js"></script>
+    <script src="./angular-markdown-editable.js"></script>
+    <script src="./script.js"></script>
+    <script>
+      
+      document.getElementsByClassName("markdown-body ng-valid ng-dirty ng-valid-parse ng-touched")[0].innerText="Hello World!";
+    </script>
+  </body>
+</html>
